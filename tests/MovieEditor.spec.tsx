@@ -1,6 +1,6 @@
 import type { Movie } from "../src/interfaces/movie";
 import { MovieEditor } from "../src/components/MovieEditor";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 describe("MovieEditor Component", () => {
     const mockMovie: Movie = {
@@ -37,5 +37,19 @@ describe("MovieEditor Component", () => {
         const title = screen.getByDisplayValue("The Test Movie");
 
         expect(title).toBeInTheDocument();
+    });
+
+    test("calls editMovie with the edited movie", () => {
+        const saveButton = screen.getByRole("button", { name: /save/i });
+        fireEvent.click(saveButton);
+
+        expect(mockEditMovie).toHaveBeenCalledWith("test-movie-123", {
+            ...mockMovie,
+            title: mockMovie.title,
+            released: mockMovie.released,
+            rating: Math.ceil(mockMovie.rating / 2) * 2, // matches your rounding in state
+            description: mockMovie.description,
+            soundtrack: mockMovie.soundtrack,
+        });
     });
 });
