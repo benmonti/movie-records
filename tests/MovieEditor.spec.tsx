@@ -52,4 +52,11 @@ describe("MovieEditor Component", () => {
             soundtrack: mockMovie.soundtrack,
         });
     });
+
+    test("calls changeEditing with nothing", () => {
+        const deleteButton = screen.getByRole("button", { name: /cancel/i });
+        fireEvent.click(deleteButton);
+
+        expect(mockChangeEditing).toHaveBeenCalledWith();
+    });
 });
